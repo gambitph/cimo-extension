@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button"
 const DropZone = ( {
 	onFileSelect, isProcessing, hasResult
 } ) => {
-	const [isDragging, setIsDragging] = useState( false )
-	const inputRef = useRef < HTMLInputElement > ( null )
+	const [ isDragging, setIsDragging ] = useState( false )
+	const inputRef = useRef <HTMLInputElement> ( null )
 
 	const handleDragOver = e => {
 		e.preventDefault()
@@ -51,37 +51,37 @@ const DropZone = ( {
 
 	return (
 		<div
-			onDragOver={handleDragOver}
-			onDragLeave={handleDragLeave}
-			onDrop={handleDrop}
+			onDragOver={ handleDragOver }
+			onDragLeave={ handleDragLeave }
+			onDrop={ handleDrop }
 			className="relative"
 		>
 			<input
-				ref={inputRef}
+				ref={ inputRef }
 				type="file"
 				accept="image/*"
-				onChange={handleFileSelect}
+				onChange={ handleFileSelect }
 				className="hidden"
 			/>
 
 			{/* Expanded drop zone when dragging or no result */}
 			{( isDragging || !hasResult ) && (
 				<div
-					className={`
+					className={ `
             relative border-2 border-dashed rounded-xl p-6 transition-all duration-300
             ${isDragging
 					? "border-primary bg-cimo-dropzone-active scale-[1.02]"
 					: "border-border bg-cimo-dropzone hover:border-primary/50"
 				}
             ${hasResult ? "animate-scale-in" : ""}
-          `}
+          ` }
 				>
 					<div className="flex flex-col items-center justify-center text-center space-y-3">
 						<div
-							className={`
+							className={ `
                 p-3 rounded-full transition-all duration-300
                 ${isDragging ? "bg-primary/20 cimo-gradient" : "bg-muted"}
-              `}
+              ` }
 						>
 							{isDragging ? (
 								<Upload className="w-6 h-6 text-primary-foreground animate-pulse-soft" />
@@ -103,8 +103,8 @@ const DropZone = ( {
 									<p className="text-xs text-muted-foreground">or</p>
 								</div>
 								<Button
-									onClick={handleClick}
-									disabled={isProcessing}
+									onClick={ handleClick }
+									disabled={ isProcessing }
 									variant="default"
 									size="sm"
 									className="cimo-gradient text-primary-foreground hover:opacity-90 transition-opacity"
@@ -125,8 +125,8 @@ const DropZone = ( {
 			{hasResult && !isDragging && (
 				<div className="flex justify-center pt-2">
 					<Button
-						onClick={handleClick}
-						disabled={isProcessing}
+						onClick={ handleClick }
+						disabled={ isProcessing }
 						variant="outline"
 						size="sm"
 						className="text-xs hover:bg-primary/10 hover:text-primary hover:border-primary/50 transition-all"

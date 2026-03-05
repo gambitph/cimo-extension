@@ -6,13 +6,13 @@ import globals from 'globals'
 
 export default [
 	{
-		ignores: ['dist', 'node_modules'],
+		ignores: [ 'dist', 'node_modules' ],
 	},
 
 	js.configs.recommended,
 
 	{
-		files: ['**/*.{js,jsx}'],
+		files: [ '**/*.{js,jsx}' ],
 
 		languageOptions: {
 			ecmaVersion: 'latest',
@@ -40,9 +40,11 @@ export default [
 		},
 
 		rules: {
-			"indent": ["warn", "tab"],
-		    'space-in-parens': ['error', 'always'],
-			'space-before-function-paren': ['error', 'always'],
+			'indent': [ "warn", "tab" ],
+		    'space-in-parens': [ 'error', 'always' ],
+			'react/jsx-curly-spacing': [ 'error', 'always' ],
+			'array-bracket-spacing': [ 'error', 'always' ],
+			'space-before-function-paren': [ 'error', 'always' ],
 			'react/jsx-uses-vars': 'error',
 
 			// No semi-colons because they're a hassle.

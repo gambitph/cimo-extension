@@ -3,17 +3,17 @@ import { useRef, useState } from "react"
 export default function Popup () {
 	const fileInputRef = useRef( null )
 
-	const [isDragging, setIsDragging] = useState( false )
-	const [showSettings, setShowSettings] = useState( false )
-	const [file, setFile] = useState( null )
-	const [progress, setProgress] = useState( 0 )
-	const [isProcessing, setIsProcessing] = useState( false )
+	const [ isDragging, setIsDragging ] = useState( false )
+	const [ showSettings, setShowSettings ] = useState( false )
+	const [ file, setFile ] = useState( null )
+	const [ progress, setProgress ] = useState( 0 )
+	const [ isProcessing, setIsProcessing ] = useState( false )
 
-	const [quality, setQuality] = useState( 80 )
-	const [maxDimension, setMaxDimension] = useState( "" )
+	const [ quality, setQuality ] = useState( 80 )
+	const [ maxDimension, setMaxDimension ] = useState( "" )
 
-	const [originalSize, setOriginalSize] = useState( null )
-	const [optimizedSize, setOptimizedSize] = useState( null )
+	const [ originalSize, setOriginalSize ] = useState( null )
+	const [ optimizedSize, setOptimizedSize ] = useState( null )
 
 	const handleFile = selectedFile => {
 		if ( !selectedFile.type.startsWith( "image/" ) ) {
@@ -92,7 +92,7 @@ export default function Popup () {
 				</div>
 
 				<button
-					onClick={() => setShowSettings( !showSettings )}
+					onClick={ () => setShowSettings( !showSettings ) }
 					className="text-gray-400 hover:text-[#808cce] transition"
 				>
 					⚙
@@ -116,8 +116,8 @@ export default function Popup () {
 								type="range"
 								min="0"
 								max="100"
-								value={quality}
-								onChange={e => setQuality( Number( e.target.value ) )}
+								value={ quality }
+								onChange={ e => setQuality( Number( e.target.value ) ) }
 								className="w-full accent-[#5FACCA]"
 							/>
 							<span className="text-xs w-8 text-right">{quality}</span>
@@ -131,8 +131,8 @@ export default function Popup () {
 						<input
 							type="number"
 							placeholder="No limit"
-							value={maxDimension}
-							onChange={e => setMaxDimension( e.target.value )}
+							value={ maxDimension }
+							onChange={ e => setMaxDimension( e.target.value ) }
 							className="w-full border border-gray-200 rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-[#9CCCE0]"
 						/>
 					</div>
@@ -142,17 +142,17 @@ export default function Popup () {
 			{/* MAIN AREA */}
 			{!file ? (
 				<div
-					onDragOver={e => {
+					onDragOver={ e => {
 						e.preventDefault()
 						setIsDragging( true )
-					}}
-					onDragLeave={() => setIsDragging( false )}
-					onDrop={handleDrop}
-					className={`relative border-2 rounded-xl p-6 flex flex-col items-center justify-center text-center transition
+					} }
+					onDragLeave={ () => setIsDragging( false ) }
+					onDrop={ handleDrop }
+					className={ `relative border-2 rounded-xl p-6 flex flex-col items-center justify-center text-center transition
             ${isDragging
 					? "border-[#5FACCA] bg-[#F2FAFD]"
 					: "border-dashed border-gray-300"
-				}`}
+				}` }
 				>
 					<div className="text-3xl mb-2">📷</div>
 					<p className="text-xs text-gray-500 mb-3">
@@ -160,7 +160,7 @@ export default function Popup () {
 					</p>
 
 					<button
-						onClick={() => fileInputRef.current.click()}
+						onClick={ () => fileInputRef.current.click() }
 						className="bg-gradient-to-r from-[#9CCCE0] to-[#5FACCA] text-white px-4 py-2 rounded-lg text-xs font-medium shadow-sm hover:opacity-95 transition"
 					>
 						Select Image
@@ -169,13 +169,13 @@ export default function Popup () {
 					<input
 						type="file"
 						accept="image/*"
-						ref={fileInputRef}
+						ref={ fileInputRef }
 						hidden
-						onChange={e => {
+						onChange={ e => {
 							if ( e.target.files?.[0] ) {
 								handleFile( e.target.files[0] )
 							}
-						}}
+						} }
 					/>
 				</div>
 			) : (
@@ -195,7 +195,7 @@ export default function Popup () {
 							<div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
 								<div
 									className="h-2 rounded-full bg-gradient-to-r from-[#9CCCE0] to-[#5FACCA] transition-all"
-									style={{ width: `${progress}%` }}
+									style={ { width: `${progress}%` } }
 								/>
 							</div>
 						</div>
@@ -218,7 +218,7 @@ export default function Popup () {
 					)}
 
 					<button
-						onClick={resetState}
+						onClick={ resetState }
 						className="w-full border border-gray-200 py-2 rounded-lg text-xs hover:bg-gray-50 transition"
 					>
 						Upload Another
