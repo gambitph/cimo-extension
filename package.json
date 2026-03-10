@@ -11,8 +11,12 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@radix-ui/react-collapsible": "^1.1.12",
+    "@radix-ui/themes": "^3.3.0",
     "@tailwindcss/postcss": "^4.2.1",
+    "lucide-react": "^0.577.0",
     "postcss": "^8.5.8",
+    "radix-ui": "^1.4.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^4.2.1"
@@ -24,7 +28,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.7.0",
-    "eslint": "^9.39.3",
+    "eslint": "^9.39.4",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",

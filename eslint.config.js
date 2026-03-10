@@ -6,13 +6,13 @@ import globals from 'globals'
 
 export default [
 	{
-		ignores: [ 'dist', 'node_modules' ],
+		ignores: ['dist', 'node_modules'],
 	},
 
 	js.configs.recommended,
 
 	{
-		files: [ '**/*.{js,jsx}' ],
+		files: ['**/*.{js,jsx}'],
 
 		languageOptions: {
 			ecmaVersion: 'latest',
@@ -40,21 +40,22 @@ export default [
 		},
 
 		rules: {
-			'indent': [ "warn", "tab" ],
-		    'space-in-parens': [ 'error', 'always' ],
-			'react/jsx-curly-spacing': [ 'error', 'always' ],
-			'array-bracket-spacing': [ 'error', 'always' ],
-			'space-before-function-paren': [ 'error', 'always' ],
+			'indent': ["warn", "tab"],
+			'space-in-parens': ['error', 'always'],
+			'space-in-brackets': ['error', 'always'],
+			'react/jsx-curly-spacing': ['error', 'always'],
+			'array-bracket-spacing': ['error', 'always'],
+			'space-before-function-paren': ['error', 'always'],
 			'react/jsx-uses-vars': 'error',
 
 			// No semi-colons because they're a hassle.
-			semi: [ 'error', 'never' ],
+			semi: ['error', 'never'],
 
 			// Only use parenthesis on arrow functions that need them since it's a hassle.
-			'arrow-parens': [ 'error', 'as-needed' ],
+			'arrow-parens': ['error', 'as-needed'],
 
 			// Force destructuring assignments to be multiline if they have lots of variables.
-			'object-curly-newline': [ 'error', {
+			'object-curly-newline': ['error', {
 				ObjectExpression: {
 					multiline: true,
 					minProperties: 3,
@@ -76,7 +77,7 @@ export default [
 					minProperties: 3,
 					consistent: false,
 				},
-			} ],
+			}],
 
 			// Allow assigning same named variables (mainly for function arguments) in inside code-blocks.
 			'no-shadow': 'off',
@@ -85,21 +86,21 @@ export default [
 			'no-nested-ternary': 'off',
 
 			// Allow tabs and spaces mixed for aesthetics.
-			'no-mixed-spaces-and-tabs': [ 'error', 'smart-tabs' ],
+			'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 
 			// Sort to find stuff easier.
-			'sort-vars': [ 'error', { ignoreCase: true } ],
+			'sort-vars': ['error', { ignoreCase: true }],
 			// 'sort-keys': ["error", "asc", {caseSensitive: false, natural: true}],
 
 			// Allow arrays to be consistently vertical or horizontal.
-			'array-element-newline': [ 'error', 'consistent' ],
+			'array-element-newline': ['error', 'consistent'],
 
 			'jsdoc/no-undefined-types': 'off',
 
 			'@wordpress/no-unguarded-get-range-at': 'off',
 
 			// LF style line breaks.
-			'linebreak-style': [ 'error', 'unix' ],
+			'linebreak-style': ['error', 'unix'],
 
 			// Turn this off since it's showing errors when optional chaining "?."
 			'no-unused-expressions': 'off',
@@ -110,13 +111,13 @@ export default [
 
 			// In array spread, ignore unused args if they start with _
 			// e.g. const [ _unused, used ] = [ 'a', 'b', 'c' ]
-			'no-unused-vars': [ 'error', { varsIgnorePattern: '^_' } ],
+			'no-unused-vars': ['error', { varsIgnorePattern: '^_' }],
 
 			// Require tabbed indentation in jsx.
-			'react/jsx-indent': [ 2, 'tab', { indentLogicalExpressions: true } ],
+			'react/jsx-indent': [2, 'tab', { indentLogicalExpressions: true }],
 
 			// Disallow unnecessary JSX expressions when literals alone are sufficient.
-			'react/jsx-curly-brace-presence': [ 'error', { props: 'never', children: 'never' } ],
+			'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],
 		},
 	},
 ]
