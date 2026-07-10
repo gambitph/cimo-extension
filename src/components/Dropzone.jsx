@@ -3,7 +3,7 @@ import { Upload, Image as ImageIcon, ArrowRight } from "lucide-react"
 import { Box, Button, Flex, Text } from "@radix-ui/themes"
 
 const DropZone = ({
-	onFileSelect, isProcessing, hasResult, isDragging
+	onFileSelect, isProcessing, hasResult, isDragging, fileError
 }) => {
 	const inputRef = useRef(null)
 
@@ -125,6 +125,12 @@ const DropZone = ({
 						Optimize Another
 					</Button>
 				</Flex>
+			)}
+
+			{fileError && (
+				<Text size="1" className="text-error text-center mt-2">
+					{fileError}
+				</Text>
 			)}
 		</Box>
 	)

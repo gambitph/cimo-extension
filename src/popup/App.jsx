@@ -8,8 +8,11 @@ import DropZone from "@/components/Dropzone"
 import OptimizationResult from "@/components/OptimizationResult"
 // import ProUpsell from "@/components/ProUpsell"
 
-import { convertImage } from "../converters/image-converter"
+import { ImageConverter } from "@cimo/shared/converters/image-converter.js"
 
+const imageConverter = new ImageConverter( null, {} )
+
+const isImageFile = file => file.type.startsWith("image/")
 
 const ExtensionPopup = () => {
 	const [quality, setQuality] = useState(80)
@@ -17,6 +20,7 @@ const ExtensionPopup = () => {
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [result, setResult] = useState(null)
 	const [isDragging, setIsDragging] = useState(false)
+	const [fileError, setFileError] = useState(null)
 	const dragCounterRef = useRef(0)
 
 	const downloadConvertedFile = fileItem => {
@@ -33,6 +37,22 @@ const ExtensionPopup = () => {
 	}
 
 	const handleFileSelect = async file => {
+		if (isProcessing) return
+
+		if (!isImageFile(file)) {
+			setFileError("Please drop an image file (PNG, JPG, GIF, or WEBP).")
+			return
+		}
+
+		setFileError(null)
+		setResult({
+			id: Date.now(),
+			name: file.name,
+			status: 'processing',
+			progress: 0,
+			isComplete: false,
+		})
+
 		let fileItem = {
 			id: Date.now(),
 			name: file.name,
@@ -45,7 +65,10 @@ const ExtensionPopup = () => {
 
 		setIsProcessing(true)
 		try {
-			const blob = await convertImage(fileItem, quality)
+			const blob = await imageConverter.convertImage( fileItem, 'webp', {
+				quality: String( quality ),
+				maxDimension: maxDimension || 0,
+			} )
 
 			fileItem = {
 				...fileItem,
@@ -80,6 +103,7 @@ const ExtensionPopup = () => {
 		e.stopPropagation()
 		dragCounterRef.current += 1
 		setIsDragging(true)
+		setFileError(null)
 	}
 
 	const handleDragLeave = e => {
@@ -103,13 +127,23 @@ const ExtensionPopup = () => {
 		dragCounterRef.current = 0
 		setIsDragging(false)
 
+		if (isProcessing) return
+
 		const files = e.dataTransfer.files
-		if (files.length > 0) {
-			const file = files[0]
-			if (file.type.startsWith("image/")) {
-				handleFileSelect(file)
-			}
+		if (files.length === 0) return
+
+		if (files.length > 1) {
+			setFileError("Only one file at a time.")
+			return
 		}
+
+		const file = files[0]
+		if (!isImageFile(file)) {
+			setFileError("Please drop an image file (PNG, JPG, GIF, or WEBP).")
+			return
+		}
+
+		handleFileSelect(file)
 	}
 
 	return (
@@ -153,6 +187,7 @@ const ExtensionPopup = () => {
 					isProcessing={isProcessing}
 					hasResult={result !== null}
 					isDragging={isDragging}
+					fileError={fileError}
 				/>
 
 				<SettingsPanel

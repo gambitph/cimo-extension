@@ -1,4 +1,4 @@
-@import "@radix-ui/themes/styles.css";
+@import "./radix.css";
 @import "tailwindcss";
 
 @theme {
@@ -11,6 +11,7 @@
 	--color-dark: #000000;
 	--color-subtle: #666666;
 	--color-inverse: #000000;
+	--color-error: #dc2626;
 
 	--shadow-popup: 0 0 0 1px rgb(0 0 0 / 0.08), 0 8px 32px -8px rgb(0 0 0 / 0.12);
 }

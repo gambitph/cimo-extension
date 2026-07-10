@@ -1,0 +1,25 @@
+/* Tokens */
+@import "@radix-ui/themes/tokens/base.css";
+@import "@radix-ui/themes/tokens/colors/gray.css";
+@import "@radix-ui/themes/tokens/colors/grass.css";
+@import "@radix-ui/themes/layout/tokens.css";
+@import "@radix-ui/themes/layout/components.css";
+@import "@radix-ui/themes/layout/utilities.css";
+
+/* Components */
+@import "@radix-ui/themes/src/components/reset.css";
+@import "@radix-ui/themes/src/components/animations.css";
+@import "@radix-ui/themes/src/components/text.css";
+@import "@radix-ui/themes/src/components/button.css";
+@import "@radix-ui/themes/src/components/icon-button.css";
+@import "@radix-ui/themes/src/components/slider.css";
+@import "@radix-ui/themes/src/components/progress.css";
+@import "@radix-ui/themes/src/components/text-field.css";
+@import "@radix-ui/themes/src/components/badge.css";
+@import "@radix-ui/themes/src/components/spinner.css";
+
+.radix-themes:where([data-is-root-theme='true']) {
+	position: relative;
+	z-index: 0;
+	min-height: auto;
+}
