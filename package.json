@@ -3,6 +3,15 @@
   "type": "module",
   "version": "1.0.0",
   "private": true,
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gambitph/cimo-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gambitph/cimo-extension/issues"
+  },
+  "homepage": "https://github.com/gambitph/cimo-extension#readme",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

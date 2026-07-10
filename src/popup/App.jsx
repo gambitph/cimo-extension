@@ -88,6 +88,7 @@ const ExtensionPopup = () => {
 		} catch (error) {
 			console.error('Error processing file:', error)
 			setResult(null)
+			setFileError('Could not optimize this image. Try a different file or lower the quality setting.')
 			setIsProcessing(false)
 		}
 	}

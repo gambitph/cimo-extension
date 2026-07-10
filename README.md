@@ -32,6 +32,8 @@ npm run dev
 npm run build
 ```
 
+The uploadable ZIP for the Chrome Web Store is written to `release/`.
+
 ## Project Structure
 
 - `src/popup/` — Extension popup UI
@@ -39,10 +41,11 @@ npm run build
 - `src/shims/` — WordPress dependency shims for the shared Cimo converter
 - `manifest.config.js` — Chrome extension manifest
 - `public/` — Extension icons
+- `docs/` — Privacy policy and Chrome Web Store listing guide
 
 ## Shared converter
 
-Image conversion uses the same `ImageConverter` class as the main [Cimo](https://github.com/gambitph/cimo) WordPress plugin, installed as a Git dependency:
+Image conversion uses the same `ImageConverter` class as the main [Cimo](https://github.com/gambitph/cimo) WordPress plugin, installed as a pinned Git dependency:
 
 ```json
 "cimo": "github:gambitph/cimo#develop"
@@ -50,15 +53,26 @@ Image conversion uses the same `ImageConverter` class as the main [Cimo](https:/
 
 The extension imports from `@cimo/shared/converters`, which resolves to `node_modules/cimo/src/shared/converters`. WordPress dependencies (`@wordpress/hooks`, `@wordpress/i18n`) are shimmed in `src/shims/` for the extension environment.
 
-To update the converter to a newer Cimo commit:
+To update the converter to a newer Cimo commit, change the hash in `package.json`, run `npm install`, test, and update `THIRD_PARTY_NOTICES.md`.
 
-```bash
-npm update cimo
-```
+## Chrome Web Store
+
+See [docs/CHROME_WEB_STORE.md](docs/CHROME_WEB_STORE.md) for:
+
+- Store listing copy (short and detailed descriptions)
+- Data safety form answers
+- Privacy policy URL
+- Submission checklist
+
+**Privacy policy:** [docs/PRIVACY.md](docs/PRIVACY.md)
 
 ## Privacy
 
-All image processing happens locally in the extension popup. No network requests are made and no files are sent to external servers.
+All image processing happens locally in the extension popup. No network requests are made and no files are sent to external servers. See [docs/PRIVACY.md](docs/PRIVACY.md) for the full privacy policy.
+
+## License
+
+GPL-2.0-or-later. See [LICENSE](LICENSE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Documentation
 
