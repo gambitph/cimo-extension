@@ -4,7 +4,7 @@ import CimoLogo from "@/components/CimoLogo"
 import SettingsPanel from "@/components/SettingsPanel"
 import DropZone from "@/components/Dropzone"
 import OptimizationResult from "@/components/OptimizationResult"
-import ProUpsell from "@/components/ProUpsell"
+// import ProUpsell from "@/components/ProUpsell"
 
 import { convertImage } from "../converters/image-converter"
 
@@ -138,8 +138,8 @@ const ExtensionPopup = () => {
 					onMaxDimensionChange={setMaxDimension}
 				/>
 
-				{/* Pro Upsell */}
-				<ProUpsell />
+				{/* Pro Upsell — temporarily hidden */}
+				{/* <ProUpsell /> */}
 			</div>
 
 			{/* Footer */}
