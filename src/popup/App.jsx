@@ -1,4 +1,6 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
+
+import { Box, Flex, Text } from "@radix-ui/themes"
 
 import CimoLogo from "@/components/CimoLogo"
 import SettingsPanel from "@/components/SettingsPanel"
@@ -14,15 +16,10 @@ const ExtensionPopup = () => {
 	const [maxDimension, setMaxDimension] = useState("")
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [result, setResult] = useState(null)
-
-
+	const [isDragging, setIsDragging] = useState(false)
+	const dragCounterRef = useRef(0)
 
 	const downloadConvertedFile = fileItem => {
-		console.log('downloadConvertedFile called with:', fileItem)
-		console.log('fileItem.convertedBlob:', fileItem.convertedBlob)
-		console.log('fileItem.status:', fileItem.status)
-
-		// Add a little delay before downloading
 		setTimeout(() => {
 			if (fileItem.convertedBlob) {
 				const url = URL.createObjectURL(fileItem.convertedBlob)
@@ -31,15 +28,10 @@ const ExtensionPopup = () => {
 				a.download = fileItem.name.replace(/\.[^/.]+$/, '') + '.' + 'webp'
 				a.click()
 				URL.revokeObjectURL(url)
-
-				console.log('Download initiated for:', fileItem.name)
-			} else {
-				console.error('No convertedBlob found for:', fileItem.name)
 			}
 		}, 1000)
 	}
 
-	// Simulate file optimization (mock for UI demo)
 	const handleFileSelect = async file => {
 		let fileItem = {
 			id: Date.now(),
@@ -51,13 +43,10 @@ const ExtensionPopup = () => {
 			convertedBlob: null
 		}
 
-		console.log(fileItem)
-
 		setIsProcessing(true)
 		try {
 			const blob = await convertImage(fileItem, quality)
 
-			// Update status to converted and store the blob
 			fileItem = {
 				...fileItem,
 				name: fileItem.name.replace(/\.[^/.]+$/, '') + '.webp',
@@ -70,48 +59,84 @@ const ExtensionPopup = () => {
 			}
 			setResult(fileItem)
 
-			// Auto-download the file after conversion
 			setIsProcessing(false)
 			downloadConvertedFile(fileItem)
 
 		} catch (error) {
 			console.error('Error processing file:', error)
 			setResult(null)
+			setIsProcessing(false)
 		}
 	}
 
 	const handleDownload = () => {
-		console.log('handleDownload called with result:', result)
 		if (result && result.convertedBlob) {
-			downloadConvertedFile({ ...result, convertedBlob: result.convertedBlob }, true)
+			downloadConvertedFile({ ...result, convertedBlob: result.convertedBlob })
+		}
+	}
+
+	const handleDragEnter = e => {
+		e.preventDefault()
+		e.stopPropagation()
+		dragCounterRef.current += 1
+		setIsDragging(true)
+	}
+
+	const handleDragLeave = e => {
+		e.preventDefault()
+		e.stopPropagation()
+		dragCounterRef.current -= 1
+		if (dragCounterRef.current <= 0) {
+			dragCounterRef.current = 0
+			setIsDragging(false)
+		}
+	}
+
+	const handleDragOver = e => {
+		e.preventDefault()
+		e.stopPropagation()
+	}
+
+	const handleDrop = e => {
+		e.preventDefault()
+		e.stopPropagation()
+		dragCounterRef.current = 0
+		setIsDragging(false)
+
+		const files = e.dataTransfer.files
+		if (files.length > 0) {
+			const file = files[0]
+			if (file.type.startsWith("image/")) {
+				handleFileSelect(file)
+			}
 		}
 	}
 
 	return (
-		<div className="w-90 cimo-shadow-lg overflow-hidden rounded-2x bg-foreground max-h-1/2">
-			{/* Header */}
-			<div className="px-4 py-3 border-b border-border bg-card">
-				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-2.5">
-						<CimoLogo size={28} />
-						<div>
-							<h1 className="text-sm font-semibold text-dark">
-								Cimo
-							</h1>
-							<p className="text-[10px] text-muted-foreground -mt-0.5">
-								Media Optimizer
-							</p>
-						</div>
-					</div>
-					{/* <span className="text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-						Free
-					</span> */}
-				</div>
-			</div>
+		<Box
+			className="w-[360px] overflow-hidden rounded-2xl bg-background relative"
+			style={{ boxShadow: 'var(--shadow-popup)' }}
+			onDragEnter={handleDragEnter}
+			onDragLeave={handleDragLeave}
+			onDragOver={handleDragOver}
+			onDrop={handleDrop}
+		>
+			<Box px="4" py="4" className="border-b border-muted">
+				<Flex align="center" gap="3">
+					<CimoLogo size={32} className="rounded-lg" />
+					<Box>
+						<Text size="3" weight="bold" className="text-dark leading-none tracking-tight">
+							Cimo
+						</Text>
+						&nbsp;
+						<Text size="1" className="text-subtle leading-tight mt-0.5">
+							Media Optimizer
+						</Text>
+					</Box>
+				</Flex>
+			</Box>
 
-			{/* Content */}
-			<div className="p-4 space-y-4 bg-background">
-				{/* Optimization Result */}
+			<Box px="4" py="4" className="space-y-4">
 				{result && (
 					<OptimizationResult
 						fileName={result.name}
@@ -123,14 +148,13 @@ const ExtensionPopup = () => {
 					/>
 				)}
 
-				{/* Drop Zone */}
 				<DropZone
 					onFileSelect={handleFileSelect}
 					isProcessing={isProcessing}
 					hasResult={result !== null}
+					isDragging={isDragging}
 				/>
 
-				{/* Settings */}
 				<SettingsPanel
 					quality={quality}
 					maxDimension={maxDimension}
@@ -140,15 +164,14 @@ const ExtensionPopup = () => {
 
 				{/* Pro Upsell — temporarily hidden */}
 				{/* <ProUpsell /> */}
-			</div>
+			</Box>
 
-			{/* Footer */}
-			<div className="px-4 py-2 border-t border-border bg-muted/30">
-				<p className="text-[10px] text-center text-muted-foreground">
-					Free version • Images only • 1 file at a time
-				</p>
-			</div>
-		</div>
+			<Box px="4" py="3" className="bg-inverse">
+				<Text size="1" align="center" className="text-white/60" as="p">
+					Free version · Images only · 1 file at a time
+				</Text>
+			</Box>
+		</Box>
 	)
 }
 

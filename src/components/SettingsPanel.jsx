@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { ChevronDown, Settings } from "lucide-react"
-import { Slider } from "@radix-ui/themes"
+import { Badge, Box, Flex, Slider, Text, TextField } from "@radix-ui/themes"
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -17,28 +17,30 @@ const SettingsPanel = ({
 
 	return (
 		<Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full">
-			<CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-sm font-medium text-dark hover:bg-muted/30 rounded-lg transition-all duration-200">
-				<div className="flex items-center gap-2">
-					<Settings className="w-4 h-4" />
-					<span>Settings</span>
-				</div>
+			<CollapsibleTrigger className="flex items-center justify-between w-full px-1 py-2 transition-colors duration-150">
+				<Flex align="center" gap="2">
+					<Settings className="w-4 h-4 text-subtle" strokeWidth={1.5} />
+					<Text size="1" weight="bold" className="cimo-label text-dark">
+						Settings
+					</Text>
+				</Flex>
 				<ChevronDown
-					className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+					className={`w-4 h-4 text-subtle transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+					strokeWidth={1.5}
 				/>
 			</CollapsibleTrigger>
 
 			<CollapsibleContent className="overflow-hidden data-[state=open]:animate-slide-up">
-				<div className="px-5 py-3 space-y-5 bg-muted/30 rounded-lg mt-2">
-					{/* WebP Quality Slider */}
-					<div className="space-y-2">
-						<div className="flex items-center justify-between">
-							<label htmlFor="quality" className="text-xs font-medium">
+				<Box className="mt-1 rounded-2xl border border-muted bg-background p-4 space-y-5">
+					<Box className="space-y-3">
+						<Flex align="center" justify="between">
+							<Text as="label" htmlFor="quality" size="1" weight="bold" className="cimo-label text-dark">
 								WebP Quality
-							</label>
-							<span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+							</Text>
+							<Badge className="bg-accent text-dark font-semibold" size="1" variant="solid">
 								{quality}%
-							</span>
-						</div>
+							</Badge>
+						</Flex>
 						<Slider
 							id="quality"
 							min={0}
@@ -46,33 +48,31 @@ const SettingsPanel = ({
 							step={1}
 							value={[quality]}
 							onValueChange={value => onQualityChange(value[0])}
-							className="w-full"
-							color="cyan"
+							color="grass"
 						/>
-						<p className="text-[10px] text-muted-foreground">
-							Higher quality = larger file size
-						</p>
-					</div>
+						<Text size="1" className="text-subtle">
+							Higher quality means larger file size
+						</Text>
+					</Box>
 
-					{/* Max Dimension Input */}
-					<div className="space-y-2">
-						<label htmlFor="maxDimension" className="text-xs font-medium">
-							Max Dimension (px)
-						</label>
-						<br />
-						<input
+					<Box className="space-y-2">
+						<Text as="label" htmlFor="maxDimension" size="1" weight="bold" className="cimo-label text-dark">
+							Max Dimension
+						</Text>
+						<TextField.Root
 							id="maxDimension"
 							type="number"
+							size="2"
 							placeholder="Leave blank for original size"
 							value={maxDimension}
 							onChange={e => onMaxDimensionChange(e.target.value)}
-							className="flex h-6 w-full rounded-md border border-dark bg-background px-3 py-3 text-xs placeholder:text-dark/50"
+							className="[&_input]:border-muted"
 						/>
-						<p className="text-[10px] text-muted-foreground">
-							Resize images exceeding this width/height
-						</p>
-					</div>
-				</div>
+						<Text size="1" className="text-subtle">
+							Resize images exceeding this width or height
+						</Text>
+					</Box>
+				</Box>
 			</CollapsibleContent>
 		</Collapsible>
 	)

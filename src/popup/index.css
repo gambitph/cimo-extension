@@ -1,20 +1,91 @@
 @import "@radix-ui/themes/styles.css";
 @import "tailwindcss";
 
-
 @theme {
-  	--color-primary: #5FACCA;
- 	--color-primary-light: #ECF5F8;
-	--color-secondary: #21C55D;
-	--color-secondary-light: #EBF8EE;
+	--color-accent: #1aef73;
+	--color-accent-dim: #17d968;
+	--color-accent-muted: #e6fbf0;
 	--color-foreground: #FFFFFF;
-	--color-background: #F6F7F9;
-  	--color-muted: #E7EAED;
-  	--color-dark: #2D3249;
+	--color-background: #FFFFFF;
+	--color-muted: #E5E5E5;
+	--color-dark: #000000;
+	--color-subtle: #666666;
+	--color-inverse: #000000;
+
+	--shadow-popup: 0 0 0 1px rgb(0 0 0 / 0.08), 0 8px 32px -8px rgb(0 0 0 / 0.12);
 }
 
-
+body {
+	margin: 0;
+	background: transparent;
+}
 
 .radix-themes:where([data-is-root-theme='true']) {
 	min-height: auto !important;
+	--default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+	/* Cimo neon green accent */
+	--accent-1: #f4fdf8;
+	--accent-2: #e6fbf0;
+	--accent-3: #d1f7e1;
+	--accent-4: #a8f0c8;
+	--accent-5: #7fe8af;
+	--accent-6: #4fdf91;
+	--accent-7: #2ae97e;
+	--accent-8: #17d968;
+	--accent-9: #1aef73;
+	--accent-10: #15c85c;
+	--accent-11: #0b5c30;
+	--accent-12: #062e18;
+	--accent-contrast: #000000;
+}
+
+.cimo-label {
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.cimo-btn-primary {
+	background-color: var(--color-accent) !important;
+	color: #000000 !important;
+	font-weight: 600 !important;
+}
+
+.cimo-btn-primary:hover {
+	background-color: var(--color-accent-dim) !important;
+}
+
+.cimo-btn-primary .rt-Spinner {
+	--spinner-color: #000000;
+}
+
+@keyframes slide-up {
+	from {
+		opacity: 0;
+		transform: translateY(6px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes scale-in {
+	from {
+		opacity: 0;
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.animate-slide-up {
+	animation: slide-up 0.2s ease-out;
+}
+
+.animate-scale-in {
+	animation: scale-in 0.15s ease-out;
 }

@@ -1,8 +1,5 @@
-import {
-	Download, Check, FileImage
-} from "lucide-react"
-import { Button, Progress } from "@radix-ui/themes"
-
+import { Download, Check, FileImage } from "lucide-react"
+import { Box, Flex, IconButton, Progress, Text } from "@radix-ui/themes"
 
 const formatFileSize = bytes => {
 	if (bytes < 1024) return `${bytes} B`
@@ -22,66 +19,69 @@ const OptimizationResult = ({
 	const savedPercentage = originalSize > 0
 		? Math.round((savedBytes / originalSize) * 100)
 		: 0
+	const displayPercentage = Math.abs(savedPercentage)
 
 	return (
-		<div className="border rounded-xl p-4 space-y-3 animate-slide-up text-dark">
-			{/* File info header */}
-			<div className="flex items-center gap-3">
-				<div className="p-2 rounded-lg">
-					<FileImage className="w-6 h-6 text-primary" />
-				</div>
-				<div className="flex-1 min-w-0">
-					<p className="text-sm font-medium truncate mb-1">
+		<Box className="rounded-2xl border border-muted p-4 animate-slide-up">
+			<Flex align="center" gap="3">
+				<Box className="rounded-lg border border-muted p-2 shrink-0">
+					<FileImage className="w-5 h-5 text-dark" strokeWidth={1.5} />
+				</Box>
+				<Box className="flex-1 min-w-0">
+					<Text size="2" weight="medium" className="truncate block mb-2 text-dark">
 						{fileName}
-					</p>
+					</Text>
 					<Progress
 						value={progress}
-						color="grass"
-						className={`h-2 ${isComplete ? '[&>div]:bg-success' : ''}`}
+						color={isComplete ? "grass" : "gray"}
+						size="1"
 					/>
-					<div className="flex justify-between text-[10px]">
-						<span>{progress}% complete</span>
-					</div>
-				</div>
+					<Text size="1" className="text-subtle mt-1.5">
+						{progress}% complete
+					</Text>
+				</Box>
 				{isComplete && (
-					<Check className="w-6 h-6 text-secondary" />
+					<Box className="rounded-full bg-accent p-1 shrink-0">
+						<Check className="w-4 h-4 text-dark" strokeWidth={2.5} />
+					</Box>
 				)}
-			</div>
+			</Flex>
 
-			{/* Stats */}
 			{isComplete && (
-				<div className="flex items-center justify-between p-3 rounded-lg border border-secondary bg-secondary-light ">
-					<div>
-						<p className="text-[10px] text-muted-foreground uppercase tracking-wide">
-							Size Reduction
-						</p>
-						<div className="flex items-baseline gap-2">
-							<span className="text-lg font-bold text-secondary">
-								-{savedPercentage}%
-							</span>
-							<span className="text-xs">
-								(<span className="line-through">
-									{formatFileSize(originalSize)}
-								</span>
-								<span className="mx-1">→</span>
-								<span className="text-sm font-semibold">
-									{formatFileSize(optimizedSize)}
-								</span>)
-							</span>
-						</div>
-					</div>
-					<div>
-						<button
+				<Box className="mt-4 rounded-xl border border-muted bg-accent-muted p-4">
+					<Flex align="center" justify="between">
+						<Box>
+							<Text size="1" className="cimo-label text-subtle">
+								Size reduction
+							</Text>
+							<Flex align="baseline" gap="2" mt="1" wrap="wrap">
+								<Text size="6" weight="bold" className="text-accent leading-none">
+									{savedPercentage >= 0 ? '-' : '+'}{displayPercentage}%
+								</Text>
+								<Text size="1" className="text-subtle">
+									<span className="line-through">{formatFileSize(originalSize)}</span>
+									{" → "}
+									<span className="text-dark font-medium">{formatFileSize(optimizedSize)}</span>
+								</Text>
+							</Flex>
+						</Box>
+						<IconButton
+							variant="solid"
+							size="2"
+							radius="medium"
 							onClick={onDownload}
-							className="text-secondary hover:text-secondary/60"
+							aria-label="Download optimized image"
+							className="cimo-btn-primary shrink-0"
 						>
-							<Download className="w-6 h-6" />
-						</button>
-					</div>
-				</div>
-
+							<Download className="w-4 h-4" />
+						</IconButton>
+					</Flex>
+					<p className="text-subtle mt-3 text-[10px] leading-[1.3]">
+						Your optimized media has been downloaded automatically.
+					</p>
+				</Box>
 			)}
-		</div>
+		</Box>
 	)
 }
 

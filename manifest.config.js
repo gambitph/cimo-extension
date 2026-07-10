@@ -3,17 +3,21 @@ import pkg from './package.json'
 
 export default defineManifest( {
 	manifest_version: 3,
-	name: pkg.name,
+	name: 'Cimo - Media Optimizer',
 	version: pkg.version,
 	icons: {
-		48: 'public/logo.png',
+		16: 'public/icon-16.png',
+		48: 'public/icon-48.png',
+		128: 'public/icon-128.png',
 	},
 	permissions: [
 		'contentSettings',
 	],
 	action: {
 		default_icon: {
-			48: 'public/logo.png',
+			16: 'public/icon-16.png',
+			48: 'public/icon-48.png',
+			128: 'public/icon-128.png',
 		},
 		default_popup: 'src/popup/index.html',
 	},

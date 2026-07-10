@@ -1,45 +1,17 @@
-import { useState, useRef } from "react"
-import { Upload, Image as ImageIcon } from "lucide-react"
-import { Button } from "@radix-ui/themes"
+import { useRef } from "react"
+import { Upload, Image as ImageIcon, ArrowRight } from "lucide-react"
+import { Box, Button, Flex, Text } from "@radix-ui/themes"
 
 const DropZone = ({
-	onFileSelect, isProcessing, hasResult
+	onFileSelect, isProcessing, hasResult, isDragging
 }) => {
-	const [isDragging, setIsDragging] = useState(false)
 	const inputRef = useRef(null)
-
-	const handleDragOver = e => {
-		e.preventDefault()
-		e.stopPropagation()
-		setIsDragging(true)
-	}
-
-	const handleDragLeave = e => {
-		e.preventDefault()
-		e.stopPropagation()
-		setIsDragging(false)
-	}
-
-	const handleDrop = e => {
-		e.preventDefault()
-		e.stopPropagation()
-		setIsDragging(false)
-
-		const files = e.dataTransfer.files
-		if (files.length > 0) {
-			const file = files[0]
-			if (file.type.startsWith("image/")) {
-				onFileSelect(file)
-			}
-		}
-	}
 
 	const handleFileSelect = e => {
 		const files = e.target.files
 		if (files && files.length > 0) {
 			onFileSelect(files[0])
 		}
-		// Reset input so same file can be selected again
 		if (inputRef.current) {
 			inputRef.current.value = ""
 		}
@@ -50,12 +22,7 @@ const DropZone = ({
 	}
 
 	return (
-		<div
-			onDragOver={handleDragOver}
-			onDragLeave={handleDragLeave}
-			onDrop={handleDrop}
-			className="relative"
-		>
+		<Box className="relative">
 			<input
 				ref={inputRef}
 				type="file"
@@ -64,86 +31,102 @@ const DropZone = ({
 				className="hidden"
 			/>
 
-			{/* Expanded drop zone when dragging and no optimized file yet */}
-			{(isDragging || !hasResult) && (
-				<div
+			{!hasResult && (
+				<Box
 					className={`
-						border-gray relative border-2 border-dashed rounded-xl p-6 transition-all duration-300 bg-primary-light
-						${isDragging && "border-primary scale-[1.02]"}
-					` }
+						rounded-2xl border bg-background p-6 transition-colors duration-200
+						${isDragging
+							? "border-dark ring-2 ring-accent/40"
+							: "border-muted hover:border-dark/20"
+						}
+					`}
 				>
-					<div className="flex flex-col items-center justify-center text-center space-y-3 min-h-60 text-dark">
-						{isDragging ? (
-							<Upload className="w-10 h-10" />
-						) : (
-							<ImageIcon className="w-10 h-10" />
-						)}
+					<Flex
+						direction="column"
+						align="center"
+						justify="center"
+						gap="4"
+						className="min-h-40 text-center"
+					>
+						<Box className="rounded-full border border-muted p-3">
+							{isDragging ? (
+								<Upload className="w-5 h-5 text-dark" strokeWidth={1.5} />
+							) : (
+								<ImageIcon className="w-5 h-5 text-dark" strokeWidth={1.5} />
+							)}
+						</Box>
 
 						{isDragging ? (
-							<p className="text-sm font-medium">
-								Drop your image here
-							</p>
+							<Text size="2" weight="bold" className="cimo-label text-dark">
+								Drop your image
+							</Text>
 						) : (
 							<>
-								<div className="space-y-1">
-									<p className="text-sm font-medium">
+								<Box>
+									<Text size="2" weight="bold" className="cimo-label text-dark">
+										Upload a file
+									</Text>
+									<Text size="2" className="text-subtle mt-2 max-w-[240px] mx-auto block">
 										Drop an image here to optimize it to WebP format
-									</p>
-									<p className="text-[10px]">or</p>
-								</div>
+									</Text>
+								</Box>
+
 								<Button
 									onClick={handleClick}
 									loading={isProcessing}
 									variant="solid"
-									size="2"
-									color="cyan"
-									className="hover:opacity-90 transition-opacity py-2 rounded-full"
+									size="3"
+									radius="medium"
+									className="cimo-btn-primary"
 								>
-									<Upload className="w-6 h-6 text-muted" />
 									Select Image
+									<ArrowRight className="w-4 h-4" />
 								</Button>
-								<p className="text-[10px] mt-2">
+
+								<Text size="1" className="text-subtle">
 									PNG, JPG, GIF, WEBP supported
-								</p>
+								</Text>
 							</>
 						)}
-					</div>
-				</div>
+					</Flex>
+				</Box>
 			)}
 
-			{/* Compact button when there's a result */}
+			{hasResult && isDragging && (
+				<Box className="rounded-2xl border border-dark ring-2 ring-accent/40 bg-background p-6">
+					<Flex
+						direction="column"
+						align="center"
+						justify="center"
+						gap="3"
+						className="min-h-32 text-center"
+					>
+						<Box className="rounded-full bg-accent p-3">
+							<Upload className="w-5 h-5 text-dark" strokeWidth={1.5} />
+						</Box>
+						<Text size="2" weight="bold" className="cimo-label text-dark">
+							Drop your image
+						</Text>
+					</Flex>
+				</Box>
+			)}
+
 			{hasResult && !isDragging && (
-				<div className="flex justify-center pt-2">
+				<Flex justify="center" pt="1">
 					<Button
 						onClick={handleClick}
 						disabled={isProcessing}
 						variant="outline"
-						size="sm"
-						color="cyan"
-						className="text-xs text-primary transition-all"
+						size="2"
+						radius="medium"
+						className="border-dark text-dark hover:bg-accent-muted"
 					>
-						<Upload className="w-6 h-6" />
-						Optimize Another Image
+						<Upload className="w-4 h-4" />
+						Optimize Another
 					</Button>
-				</div>
+				</Flex>
 			)}
-
-			{/* Floating drop overlay when there's a result */}
-			{isDragging && hasResult && (
-				<div className="fixed inset-0 bg-background backdrop-blur-sm z-50 flex items-center justify-center animate-scale-in text-dark">
-					<div className="border-2 border-dashed border-primary rounded-2xl p-12 bg-primary-light">
-						<div className="flex flex-col items-center space-y-3">
-							<div className="p-4 rounded-full animate-pulse-soft">
-								<Upload className="w-10 h-10 " />
-							</div>
-							<p className="text-lg font-semibold">
-								Drop your image
-							</p>
-						</div>
-					</div>
-				</div>
-			)}
-		</div>
+		</Box>
 	)
 }
 
